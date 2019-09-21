@@ -1,30 +1,37 @@
 import argparse
 import random
+import signal
 import glob
 import time
 import sys
 import os
 
-import psutil
-
 linuxpath = '/mnt/c/'
 destpath = 'C:/'
-profile = os.environ['term_profile']
 HOME = os.environ['HOME']
+profile = os.environ['term_profile']
 PIDFILE = HOME+'/.bgSwap.PID'
 
-def check_process():
+def check_process(force):
+    def pid_exists(PID):
+        try:
+            os.getpgid(PID)
+            return True
+        except:
+            return False
     ison = False
-    if os.path.isfile(PIDFILE):
-        with open(PIDFILE,'r') as f:
-            PID=f.read()
-    else:
+    if not os.path.isfile(PIDFILE):
         with open(PIDFILE,'w') as f:
             PID=str(os.getpid())
             f.write(PID)
+    else:
+        with open(PIDFILE,'r') as f:
+            PID=f.read()
+        if force:
+            os.kill(int(PID),signal.SIGKILL)
     try:
         PID=int(PID)
-        return psutil.pid_exists(PID)
+        return pid_exists(PID)
     except ValueError:
         return False
  
@@ -33,6 +40,7 @@ def get_arguments():
     parser.add_argument('-l',action='store', dest='lookpath')
     parser.add_argument('-s',action='store_true', default=False, dest='shuffle')
     parser.add_argument('-t',action='store', default=60, dest='sleeptime')
+    parser.add_argument('-f',action='store_true', default=False, dest='force')
     results = parser.parse_args()
     return results
 
@@ -42,10 +50,11 @@ def main():
     lookpath = arg.lookpath 
     sleeptime = float(arg.sleeptime) 
     shuffle = arg.shuffle
+    force = arg.force
 
     # Decide if I want to restart if lzyStart is on
-    isrunning = check_process()
-    if isrunning: return
+    isrunning = check_process(force)
+    if isrunning and not force: return
 
     # Get bg images and replace bg
     if not lookpath.endswith('/'): lookpath=lookpath+'/'

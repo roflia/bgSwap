@@ -1,19 +1,18 @@
 bgSwap for Windows Terminal.
 
-If bgSwap process already exists, process quits. 
 
 Installation
 ----------------------------------------------------------
 
-Have following lines under zshrc/bashrc
+Set up $term_profile (windows terminal setting file, must) and others (optional).
 
 ::
 
     export term_profile='/mnt/c/Users/<NAME>/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/profiles.json'
-    alias bgSwap='python3 <bgSwapInstallaionLocation>/run.py'
+    alias bgSwap='python3.7 <bgSwapInstallaionLocation>/run.py'
 
-    # Automatically start swapping screens
-    (&>/dev/null bgswap -l $wallpapers/ -t 10 -s &)
+    # Automatically start bgSwap 
+    (bgswap -l $wallpapers/ -t 10 -s &)
 
 Usage
 ----------------------------------------------------------
@@ -31,5 +30,12 @@ Provide 3 seconds wait with -t option and shuffle function with -s. Execute on b
 ::
 
     bgswap -l $wallpapers/ -t 3 -s &
-    # Suppress PID output
-    (&>/dev/null bgswap -l $wallpapers/ -t 3 -s &)
+
+
+If bgSwap process already exists, process quits. Provide -f option to overide exsing 
+bgSwap process and create new one.  
+
+::
+
+    bgswap -f -l $wallpapers/ -t 3 -s &
+
