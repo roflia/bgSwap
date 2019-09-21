@@ -11,7 +11,7 @@ shuffle = False
 
 def main():
     # Get bg images and replace bg
-    bgs = [f for f in glob.glob(lookpath+'*.jpg')]
+    bgs = [f for f in glob.glob(lookpath+'*.*')]
     if shuffle:
         random.shuffle(bgs)
     while True:
@@ -22,10 +22,12 @@ def main():
 def replace_bg(profile, bgs, i):
     with open(profile, 'r') as f:
         content = ''.join(f.readlines())
+    cloc = content.find(destpath)
+    current = content[cloc:content.find('"',cloc)]
     if i==len(bgs)-1:
-        content = content.replace(bgs[i].replace(lookpath,destpath),bgs[0].replace(lookpath,destpath))
+        content = content.replace(current,bgs[0].replace(lookpath,destpath))
     else:
-        content = content.replace(bgs[i].replace(lookpath,destpath),bgs[i+1].replace(lookpath,destpath))
+        content = content.replace(current,bgs[i+1].replace(lookpath,destpath))
     with open(profile, 'w') as f:
         f.write(content)
 
