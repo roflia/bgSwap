@@ -4,28 +4,36 @@ bgSwap for Windows Terminal.
 Installation
 ----------------------------------------------------------
 
-Set up $term_profile (windows terminal setting file, must) and others (optional).
+Set up $term_profile in your bashrc/zshrc file.
 
 ::
 
-    export term_profile='/mnt/c/Users/<NAME>/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/profiles.json'
-    alias bgSwap='python3.7 <bgSwapInstallaionLocation>/run.py'
+    # (must)
+    export term_profile='/mnt/c/Users/<WIN_UNAME>/AppData/Local/Packages/Microsoft.WindowsTerminal_<VER>/LocalState/profiles.json'
+    
+    # (optional)
+    alias bgSwap='python3.7 <bgSwap_INSTALL_LOCATION>/run.py'
 
-    # Automatically start bgSwap 
-    (bgswap -l $wallpapers/ -t 10 -s &)
+Add following line under $term_profile to automatically start slideshow.
+
+::
+
+    # (optional)
+    # Automatically start bgSwap. Suppress PID output.
+    (bgSwap -l <wallpaper_location> -t 10 -s &)
+
 
 Usage
 ----------------------------------------------------------
 
-Provide location of background images with -l option. Program waits 60 seconds and swaps
-to next image. 
+Provide location of background images with -l option. Slideshow has 60 seconds wait time by default.
 
 ::
 
-    bgswap -l $wallpapers/
+    bgSwap -l $wallpapers/
 
 
-Provide 3 seconds wait with -t option and shuffle function with -s. Execute on backgound.
+Provide 3 seconds wait time with -t option and shuffle function with -s. Add & to execute on backgound.
 
 ::
 
@@ -37,5 +45,6 @@ bgSwap process and create new one.
 
 ::
 
-    bgswap -f -l $wallpapers/ -t 3 -s &
+    bgswap -f -l $wallpapers/ 
+
 
