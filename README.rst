@@ -20,7 +20,8 @@ Add following line under *$term_profile* to automatically start slideshow.
 
     # (optional)
     # Automatically start bgSwap. Suppress PID output.
-    (bgSwap -l <wallpaper_location> -t 10 -s &)
+    (&>/dev/null bgSwap -l <wallpaper_location> -t 10 -s &)
+
 
 
 Usage
